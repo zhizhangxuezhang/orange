@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chuangshu.orange.dao.MyMallDao">
+
+    <resultMap id="BaseResultMap" type="com.chuangshu.orange.entity.MyMall">
+        <!--@Table my_mall-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="pic" column="pic" jdbcType="VARCHAR"/>
+        <result property="introduce" column="introduce" jdbcType="VARCHAR"/>
+        <result property="hasNums" column="has_nums" jdbcType="INTEGER"/>
+        <result property="hasBuy" column="has_buy" jdbcType="INTEGER"/>
+        <result property="aPrice" column="a_price" jdbcType="OTHER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, name, pic, introduce, has_nums, has_buy, a_price, user_id
+        from orange.my_mall
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, name, pic, introduce, has_nums, has_buy, a_price, user_id
+        from orange.my_mall
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, name, pic, introduce, has_nums, has_buy, a_price, user_id
+        from orange.my_mall
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="pic != null and pic != ''">
+                and pic = #{pic}
+            </if>
+            <if test="introduce != null and introduce != ''">
+                and introduce = #{introduce}
+            </if>
+            <if test="hasNums != null">
+                and has_nums = #{hasNums}
+            </if>
+            <if test="hasBuy != null">
+                and has_buy = #{hasBuy}
+            </if>
+            <if test="aPrice != null">
+                and a_price = #{aPrice}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into orange.my_mall(name, pic, introduce, has_nums, has_buy, a_price, user_id)
+        values (#{name}, #{pic}, #{introduce}, #{hasNums}, #{hasBuy}, #{aPrice}, #{userId})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update orange.my_mall
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="pic != null and pic != ''">
+                pic = #{pic},
+            </if>
+            <if test="introduce != null and introduce != ''">
+                introduce = #{introduce},
+            </if>
+            <if test="hasNums != null">
+                has_nums = #{hasNums},
+            </if>
+            <if test="hasBuy != null">
+                has_buy = #{hasBuy},
+            </if>
+            <if test="aPrice != null">
+                a_price = #{aPrice},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from orange.my_mall where id = #{id}
+    </delete>
+    
+    <!--查询所有信息-->
+    <select id="queryOnlyAll" resultMap="BaseResultMap">
+        select
+          id, name, pic, introduce, has_nums, has_buy, a_price, user_id
+        from orange.my_mall
+    </select>
+
+</mapper>

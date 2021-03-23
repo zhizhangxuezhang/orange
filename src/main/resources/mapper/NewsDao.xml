@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chuangshu.orange.dao.NewsDao">
+
+    <resultMap id="BaseResultMap" type="com.chuangshu.orange.entity.News">
+        <!--@Table news-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="context" column="context" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="lookedNum" column="looked_num" jdbcType="INTEGER"/>
+        <result property="pic" column="pic" jdbcType="VARCHAR"/>
+        <result property="thumb" column="thumb" jdbcType="VARCHAR"/>
+        <result property="createWriter" column="create_writer" jdbcType="VARCHAR"/>
+        <result property="createPic" column="create_pic" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, name, context, create_time, looked_num, pic, thumb, create_writer, create_pic, type
+        from orange.news
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, name, context, create_time, looked_num, pic, thumb, create_writer, create_pic, type
+        from orange.news
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, name, context, create_time, looked_num, pic, thumb, create_writer, create_pic, type
+        from orange.news
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="context != null and context != ''">
+                and context = #{context}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="lookedNum != null">
+                and looked_num = #{lookedNum}
+            </if>
+            <if test="pic != null and pic != ''">
+                and pic = #{pic}
+            </if>
+            <if test="thumb != null and thumb != ''">
+                and thumb = #{thumb}
+            </if>
+            <if test="createWriter != null and createWriter != ''">
+                and create_writer = #{createWriter}
+            </if>
+            <if test="createPic != null and createPic != ''">
+                and create_pic = #{createPic}
+            </if>
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into orange.news(name, context, create_time, looked_num, pic, thumb, create_writer, create_pic, type)
+        values (#{name}, #{context}, #{createTime}, #{lookedNum}, #{pic}, #{thumb}, #{createWriter}, #{createPic}, #{type})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update orange.news
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="context != null and context != ''">
+                context = #{context},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="lookedNum != null">
+                looked_num = #{lookedNum},
+            </if>
+            <if test="pic != null and pic != ''">
+                pic = #{pic},
+            </if>
+            <if test="thumb != null and thumb != ''">
+                thumb = #{thumb},
+            </if>
+            <if test="createWriter != null and createWriter != ''">
+                create_writer = #{createWriter},
+            </if>
+            <if test="createPic != null and createPic != ''">
+                create_pic = #{createPic},
+            </if>
+            <if test="type != null and type != ''">
+                type = #{type},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from orange.news where id = #{id}
+    </delete>
+    
+    <!--查询所有信息-->
+    <select id="queryOnlyAll" resultMap="BaseResultMap">
+        select
+          id, name, context, create_time, looked_num, pic, thumb, create_writer, create_pic, type
+        from orange.news
+    </select>
+
+</mapper>

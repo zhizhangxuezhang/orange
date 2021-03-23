@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chuangshu.orange.dao.CommentDao">
+
+    <resultMap id="BaseResultMap" type="com.chuangshu.orange.entity.Comment">
+        <!--@Table comment-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="newsId" column="news_id" jdbcType="INTEGER"/>
+        <result property="context" column="context" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="touxiangUrl" column="touxiang_url" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="dianzanNum" column="dianzan_num" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, news_id, context, name, touxiang_url, create_time, dianzan_num
+        from orange.comment
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, news_id, context, name, touxiang_url, create_time, dianzan_num
+        from orange.comment
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, news_id, context, name, touxiang_url, create_time, dianzan_num
+        from orange.comment
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="newsId != null">
+                and news_id = #{newsId}
+            </if>
+            <if test="context != null and context != ''">
+                and context = #{context}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="touxiangUrl != null and touxiangUrl != ''">
+                and touxiang_url = #{touxiangUrl}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="dianzanNum != null">
+                and dianzan_num = #{dianzanNum}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into orange.comment(news_id, context)
+        values (#{newsId}, #{context})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update orange.comment
+        <set>
+            <if test="newsId != null">
+                news_id = #{newsId},
+            </if>
+            <if test="context != null and context != ''">
+                context = #{context},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from orange.comment where id = #{id}
+    </delete>
+    
+    <!--查询所有信息-->
+    <select id="queryOnlyAll" resultMap="BaseResultMap">
+        select
+          id, news_id, context, name, touxiang_url, create_time, dianzan_num
+        from orange.comment
+    </select>
+
+</mapper>
